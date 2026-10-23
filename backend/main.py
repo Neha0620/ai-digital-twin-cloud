@@ -7,7 +7,7 @@ from datetime import datetime
 from typing import Optional
 import logging
 
-from database import get_db, init_db, User, SensorReading, IotEvent
+from database import get_db, init_db, User, SensorReading, IotEvent, DeviceState
 from auth import hash_password, verify_password
 from simulator import simulate_tick, ROOMS
 from ml_models import (
@@ -32,13 +32,13 @@ _fridge_door_open: bool = False # reed-switch state from ESP32
 # Keys must exactly match what the ESP32 reads from the JSON:
 #   lights_on, ac_on, geyser_on, fridge_on, servo_angle
 _device_state: dict = {
-    "lights_on":   False,
-    "ac_on":       False,
-    "geyser_on":   False,   # ← was "fan_on" — renamed to match ESP32
-    "fridge_on":   False,
+    "lights_on": False,
+    "ac_on": False,
+    "ac_level": 0,
+    "geyser_on": False,
+    "fridge_on": False,
     "servo_angle": 0,
 }
-
 # Manual priority for temperature automation.
 # If the user turns AC OFF while temperature is still > 30 C,
 # the automatic rule will not immediately turn it back ON.
