@@ -1,2 +1,25 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Secrets
 .env
-backend/.env
+*.env
+tinytuya.json
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+
+# IDE / Windows
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store

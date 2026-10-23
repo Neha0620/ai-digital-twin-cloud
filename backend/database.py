@@ -18,13 +18,29 @@ class User(Base):
 
 class SensorReading(Base):
     __tablename__ = "sensor_readings"
+    id           = Column(Integer, primary_key=True, index=True)
+    timestamp    = Column(DateTime, default=datetime.utcnow)
+    room         = Column(String)
+    appliance    = Column(String)
+    power_w      = Column(Float)
+    temp_c       = Column(Float)
+    is_on        = Column(Integer, default=1)
+    # Real sensor fields (nullable — only set when real hardware is connected)
+    humidity     = Column(Float,   nullable=True)   # DHT22 relative humidity %
+    smoke_ppm    = Column(Float,   nullable=True)   # MQ2 raw ADC value (0–4095)
+    smoke_alert  = Column(Integer, nullable=True)   # 1 = smoke/gas detected, 0 = clear
+    motion       = Column(Integer, nullable=True)   # PIR: 1 = motion, 0 = no motion
+
+
+class IotEvent(Base):
+    """Stores discrete IoT events (smoke detected, motion, etc.) for history."""
+    __tablename__ = "iot_events"
     id         = Column(Integer, primary_key=True, index=True)
     timestamp  = Column(DateTime, default=datetime.utcnow)
+    event_type = Column(String)   # "smoke", "motion", "clear_smoke", "clear_motion"
     room       = Column(String)
-    appliance  = Column(String)
-    power_w    = Column(Float)
-    temp_c     = Column(Float)
-    is_on      = Column(Integer, default=1)
+    value      = Column(Float,  nullable=True)
+    message    = Column(String, nullable=True)
 
 
 def get_db():
