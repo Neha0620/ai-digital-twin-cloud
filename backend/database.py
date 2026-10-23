@@ -79,7 +79,18 @@ class IotEvent(Base):
     room = Column(String)
     value = Column(Float, nullable=True)
     message = Column(String, nullable=True)
+class DeviceState(Base):
+    __tablename__ = "device_states"
 
+    id = Column(Integer, primary_key=True, index=True)
+    room = Column(String, unique=True, index=True)
+
+    lights_on = Column(Integer, default=0)
+    ac_on = Column(Integer, default=0)
+    ac_level = Column(Integer, default=0)   # 0=OFF, 1=LOW, 2=MEDIUM, 3=HIGH
+    geyser_on = Column(Integer, default=0)
+    fridge_on = Column(Integer, default=0)
+    servo_angle = Column(Integer, default=0)
 
 def get_db():
     db = SessionLocal()
